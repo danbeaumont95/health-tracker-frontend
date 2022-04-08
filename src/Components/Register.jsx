@@ -83,6 +83,7 @@ const Register = () => {
           inputProps={{
             style: { textAlign: 'center' },
             className: classes.color,
+            'id': 'email'
           }}
           variant="outlined"
         />
@@ -95,6 +96,7 @@ const Register = () => {
           inputProps={{
             style: { textAlign: 'center' },
             className: classes.color,
+            'id': 'password'
           }}
           type="password"
           variant="outlined"
@@ -108,6 +110,7 @@ const Register = () => {
           inputProps={{
             style: { textAlign: 'center' },
             className: classes.color,
+            'id': 'firstName'
           }}
           variant="outlined"
         />
@@ -120,6 +123,7 @@ const Register = () => {
           inputProps={{
             style: { textAlign: 'center' },
             className: classes.color,
+            'id': 'lastName'
           }}
           variant="outlined"
         />
@@ -130,6 +134,7 @@ const Register = () => {
             setUser(user);
           }}
           className={classes.registerButton}
+          id='registerButton'
         >
   Register
         </Button>
