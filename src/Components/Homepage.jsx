@@ -96,7 +96,7 @@ const Homepage = () => {
           <Typography variant="h3" className={classes.title}>{title}</Typography>
 
           <Button onClick={handleLoginClick} className={showLogin ? classes.loginButtonOnLogin : classes.loginButtonOnRegister}>Login</Button>
-          <Button onClick={handleRegisterClick} className={showRegister ? classes.registerButtonOnRegister : classes.registerButtonOnLogin}>Register</Button>
+          <Button onClick={handleRegisterClick} className={showRegister ? classes.registerButtonOnRegister : classes.registerButtonOnLogin} id='register'>Register</Button>
 
           <div className={ showRegister ?  classes.registerShow : classes.registerNotShow}>
             <Register />

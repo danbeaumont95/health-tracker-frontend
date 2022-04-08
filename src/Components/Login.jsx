@@ -102,6 +102,7 @@ const Login = () => {
           inputProps={{
             style: { textAlign: 'center' },
             className: classes.color,
+            'id': 'outlined-email'
           }}
           variant="outlined"
         />
@@ -114,6 +115,7 @@ const Login = () => {
           inputProps={{
             style: { textAlign: 'center' },
             className: classes.color,
+            'id': 'outlined-password'
           }}
           type="password"
           variant="outlined"
@@ -125,6 +127,7 @@ const Login = () => {
             setUser(user);
           }}
           className={classes.loginButton}
+          id='button'
         >
           Login
         </Button>
