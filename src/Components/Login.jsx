@@ -73,11 +73,13 @@ const Login = () => {
           data: {
             data: {
               accessToken,
+              refreshToken
             },
           },
         } = res;
         setSuccessful(true);
         localStorage.setItem('userToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
         return Swal.fire({
           title: 'Logged in!',
           text: 'You will now be redirected to the homepage',

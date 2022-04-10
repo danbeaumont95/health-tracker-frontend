@@ -21,7 +21,8 @@ module.exports = (on, config) => {
   // `config` is the resolved Cypress config
   config.env.db = {
     user: process.env.DB_USERNAME,
-    password: process.env.PASSWORD
+    password: process.env.PASSWORD,
+    userId: process.env.USERID
   };
   return config;
 };
