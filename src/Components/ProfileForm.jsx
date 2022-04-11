@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import UserService from '../Services/user';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
+import { connect } from 'react-redux';
+import * as Types from '../store/types';
 
 const useStyles = makeStyles((theme) => ({
   allContent: {
@@ -38,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     }
   }
 }));
-const ProfileForm = ({ user })  => {
+const ProfileForm = ({ user, detailsClicked })  => {
   const [newUserDetails, setNewUserDetails] = useState({});
   const classes = useStyles();
   const [successful, setSuccessful] = useState(false);
@@ -97,85 +99,144 @@ const ProfileForm = ({ user })  => {
       {!user.firstName ? (
         <Typography>Loading...</Typography>
       ) : (
-        <Box
-          className={classes.box}
-          component="form"
-          noValidate
-          autoComplete="off"
-          sx={{
-            '& .MuiTextField-root': { m: 1, width: '25ch' }
-          }}
-          onSubmit={onSubmit}
-        >
-          <div className={classes.nameBoxes}>
-            <div className={classes.firstNameDiv}>
+        detailsClicked === 'account' ? (
+          <Box
+            className={classes.box}
+            component="form"
+            noValidate
+            autoComplete="off"
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '25ch' }
+            }}
+            onSubmit={onSubmit}
+          >
+            <div className={classes.nameBoxes}>
+              <div className={classes.firstNameDiv}>
 
-              <Typography>First name</Typography>
-              <TextField
-                variant="outlined"
-                InputProps={{
-                  classes: { input: classes.textInput }
-                }}
-                className={classes.textField}
-                defaultValue={user.firstName}
-                id="firstName"
-                {...register('firstName')}
-                onChange={handleChangeUser}
-              />
+                <Typography>First name</Typography>
+                <TextField
+                  variant="outlined"
+                  InputProps={{
+                    classes: { input: classes.textInput }
+                  }}
+                  className={classes.textField}
+                  defaultValue={user.firstName}
+                  id="firstName"
+                  {...register('firstName')}
+                  onChange={handleChangeUser}
+                />
+              </div>
+              <div className={classes.secondNameDiv}>
+                <Typography>Last name</Typography>
+                <TextField
+                  variant="outlined"
+                  InputProps={{
+                    classes: { input: classes.textInput }
+                  }}
+                  className={classes.textField}
+                  defaultValue={user.lastName}
+                  id="lastName"
+                  {...register('lastName')}
+                  onChange={handleChangeUser}
+                />
+              </div>
             </div>
-            <div className={classes.secondNameDiv}>
-              <Typography>Last name</Typography>
-              <TextField
-                variant="outlined"
-                InputProps={{
-                  classes: { input: classes.textInput }
-                }}
-                className={classes.textField}
-                defaultValue={user.lastName}
-                id="lastName"
-                {...register('lastName')}
-                onChange={handleChangeUser}
-              />
-            </div>
-          </div>
 
-          <div className={classes.nameBoxes}>
-            <div className={classes.firstNameDiv}>
+            <div className={classes.nameBoxes}>
+              <div className={classes.firstNameDiv}>
 
-              <Typography>Email</Typography>
-              <TextField
-                variant="outlined"
-                InputProps={{
-                  classes: { input: classes.textInput }
-                }}
-                className={classes.textField}
-                defaultValue={user.email}
-                id="email"
-                {...register('email')}
-                onChange={handleChangeUser}
-              />
+                <Typography>Email</Typography>
+                <TextField
+                  variant="outlined"
+                  InputProps={{
+                    classes: { input: classes.textInput }
+                  }}
+                  className={classes.textField}
+                  defaultValue={user.email}
+                  id="email"
+                  {...register('email')}
+                  onChange={handleChangeUser}
+                />
+              </div>
+              <div className={classes.secondNameDiv}>
+                <Typography>Phone Number</Typography>
+                <TextField
+                  variant="outlined"
+                  InputProps={{
+                    classes: { input: classes.textInput }
+                  }}
+                  className={classes.textField}
+                  defaultValue={user.phoneNumber}
+                  id="phoneNumber"
+                  {...register('phoneNumber')}
+                  onChange={handleChangeUser}
+                />
+              </div>
             </div>
-            <div className={classes.secondNameDiv}>
-              <Typography>Phone Number</Typography>
-              <TextField
-                variant="outlined"
-                InputProps={{
-                  classes: { input: classes.textInput }
-                }}
-                className={classes.textField}
-                defaultValue={user.phoneNumber}
-                id="phoneNumber"
-                {...register('phoneNumber')}
-                onChange={handleChangeUser}
-              />
+            <Button className={classes.updateDetailsButton} type="submit" id='submitUserDetailsButton'>Update</Button>
+          </Box>
+        ) : 
+
+          <Box
+            className={classes.box}
+            component="form"
+            noValidate
+            autoComplete="off"
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '25ch' }
+            }}
+            onSubmit={onSubmit}
+          >
+            <div className={classes.nameBoxes}>
+              <div className={classes.firstNameDiv}>
+
+                <Typography>Old Password</Typography>
+                <TextField
+                  variant="outlined"
+                  InputProps={{
+                    classes: { input: classes.textInput }
+                  }}
+                  className={classes.textField}
+                  defaultValue={user.firstName}
+                  id="firstName"
+                  {...register('firstName')}
+                  onChange={handleChangeUser}
+                />
+              </div>
+              <div className={classes.secondNameDiv}>
+                <Typography>New Password</Typography>
+                <TextField
+                  variant="outlined"
+                  InputProps={{
+                    classes: { input: classes.textInput }
+                  }}
+                  className={classes.textField}
+                  defaultValue={user.lastName}
+                  id="lastName"
+                  {...register('lastName')}
+                  onChange={handleChangeUser}
+                />
+              </div>
             </div>
-          </div>
-          <Button className={classes.updateDetailsButton} type="submit" id='submitUserDetailsButton'>Update</Button>
-        </Box>
+
+            <Button className={classes.updateDetailsButton} type="submit" id='submitUserDetailsButton'>Update</Button>
+          </Box>
+       
       )}
       
     </div>
   );
 };
 
-export default ProfileForm;
+
+
+const mapStateToProps = state => state;
+const mapDispatchToProps = dispatch => ({
+  updateAccessToken: accessToken => dispatch({
+    type: Types.UPDATE_DETAILS_CLICKED, payload: {
+      accessToken
+    }
+  }),
+});
+const connectComponent = connect(mapStateToProps, mapDispatchToProps);
+export default connectComponent(ProfileForm);

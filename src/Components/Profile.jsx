@@ -8,6 +8,9 @@ import defaultProfilePhoto from '../Images/defaultProfilePhoto.jpeg';
 import  HomeIcon  from '@material-ui/icons/HomeOutlined';
 import { Lock } from '@material-ui/icons';
 import ProfileForm from './ProfileForm';
+import { connect } from 'react-redux';
+import * as Types from '../store/types';
+
 
 const useStyles = makeStyles((theme) => ({
   allContent: {
@@ -71,12 +74,35 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: '100%'
+  },
+  accountClickedAccountItem: {
+    backgroundColor: '#ff99ff',
+    cursor: 'pointer'
+  },
+  passwordClickedAccountItem: {
+    cursor: 'pointer',
+    '&:hover': {
+      background: '#a88beb',
+    }
+  },
+  passwordClickedPasswordItem: {
+    backgroundColor: '#ff99ff',
+    cursor: 'pointer',
+
+  },
+  accountClickedPasswordItem: {
+    cursor: 'pointer',
+    '&:hover': {
+      background: '#a88beb',
+    }
   }
 }));
 
-const Profile = () => {
+const Profile = (props) => {
+  const { detailsClicked } = props;
   const [user, setUser] = useState('');
   const classes = useStyles();
+
   useEffect(() => {
     UserService.getMe(localStorage.getItem('userToken'))
       .then((res) => {
@@ -96,7 +122,16 @@ const Profile = () => {
           text: '[BadRequest] Error finding profile, please try again later'
         });
       });
-  }, [user]);
+  // }, [user]);
+  }, []);
+
+  const handleAccountClicked = () => {
+    props.updateDetailsClicked('account');
+  };
+
+  const handlePasswordClicked = () => {
+    props.updateDetailsClicked('password');
+  };
 
   return (
     <div className={classes.allContent}>
@@ -120,17 +155,17 @@ const Profile = () => {
             <Typography className={classes.userName} variant="h6">{user.firstName} {user.lastName}</Typography>
             <Divider />
             <List>
-              <ListItem disablePadding>
+              <ListItem disablePadding onClick={handleAccountClicked} className={detailsClicked === 'account' ? classes.accountClickedAccountItem : classes.passwordClickedAccountItem}>
                 <ListItemIcon>
                   <HomeIcon />
                 </ListItemIcon>
                 <ListItemText primary="Account" />
               </ListItem>
-              <ListItem disablePadding>
+              <ListItem disablePadding onClick={handlePasswordClicked} className={detailsClicked === 'password' ? classes.passwordClickedPasswordItem : classes.accountClickedPasswordItem}>
                 <ListItemIcon>
                   <Lock />
                 </ListItemIcon>
-                <ListItemText primary="Password" />
+                <ListItemText primary="Password"/>
               </ListItem>
             </List>
           </Drawer>
@@ -144,4 +179,15 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+
+
+const mapStateToProps = state => state;
+const mapDispatchToProps = dispatch => ({
+  updateDetailsClicked: detailsClicked => dispatch({
+    type: Types.UPDATE_DETAILS_CLICKED, payload: {
+      detailsClicked
+    }
+  }),
+});
+const connectComponent = connect(mapStateToProps, mapDispatchToProps);
+export default connectComponent(Profile);
