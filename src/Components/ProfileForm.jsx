@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const ProfileForm = ({ user, detailsClicked })  => {
   const [newUserDetails, setNewUserDetails] = useState({});
+  const [newUserPassword, setNewUserPassword] = useState({});
   const classes = useStyles();
   const [successful, setSuccessful] = useState(false);
 
@@ -52,6 +53,13 @@ const ProfileForm = ({ user, detailsClicked })  => {
   const handleChangeUser = (event) => {
     setNewUserDetails({
       ...newUserDetails,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  const handleChangePassword = (event) => {
+    setNewUserPassword({
+      ...newUserPassword,
       [event.target.name]: event.target.value
     });
   };
@@ -84,6 +92,33 @@ const ProfileForm = ({ user, detailsClicked })  => {
         return Swal.fire({
           title: 'Successful',
           text: 'Details successfully updated!'
+        });
+      })
+      .catch(() => {
+        return Swal.fire({
+          title: 'Error',
+          text: '[BadRequest] Error updating details, please try again later'
+        });
+      });
+  };
+
+  const onPasswordChangeSubmit = (e) => {
+    e.preventDefault();
+    setSuccessful(false);
+
+    UserService.updateUserPassword(localStorage.getItem('userToken'), newUserPassword)
+      .then((res) => {
+        const { success, message } = res.data;
+        if (success === false) {
+          return Swal.fire({
+            title: 'Error',
+            text: `${message}`
+          });
+        }
+        setSuccessful(true);
+        return Swal.fire({
+          title: 'Successful',
+          text: 'Password successfully updated!'
         });
       })
       .catch(() => {
@@ -185,7 +220,7 @@ const ProfileForm = ({ user, detailsClicked })  => {
             sx={{
               '& .MuiTextField-root': { m: 1, width: '25ch' }
             }}
-            onSubmit={onSubmit}
+            onSubmit={onPasswordChangeSubmit}
           >
             <div className={classes.nameBoxes}>
               <div className={classes.firstNameDiv}>
@@ -197,10 +232,10 @@ const ProfileForm = ({ user, detailsClicked })  => {
                     classes: { input: classes.textInput }
                   }}
                   className={classes.textField}
-                  defaultValue={user.firstName}
+                  type="password"
                   id="firstName"
-                  {...register('firstName')}
-                  onChange={handleChangeUser}
+                  {...register('originalPassword')}
+                  onChange={handleChangePassword}
                 />
               </div>
               <div className={classes.secondNameDiv}>
@@ -211,10 +246,10 @@ const ProfileForm = ({ user, detailsClicked })  => {
                     classes: { input: classes.textInput }
                   }}
                   className={classes.textField}
-                  defaultValue={user.lastName}
+                  type="password"
                   id="lastName"
-                  {...register('lastName')}
-                  onChange={handleChangeUser}
+                  {...register('newPassword')}
+                  onChange={handleChangePassword}
                 />
               </div>
             </div>

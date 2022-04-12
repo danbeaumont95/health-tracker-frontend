@@ -4,6 +4,9 @@ import { useForm } from 'react-hook-form';
 import { makeStyles } from '@material-ui/core/styles';
 import Swal from 'sweetalert2';
 import UserService from '../Services/user';
+import { connect } from 'react-redux';
+import * as Types from '../store/types';
+
 
 const useStyles = makeStyles((theme) => ({
   allContent: {
@@ -39,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Login = () => {
+const Login = (props) => {
   const classes = useStyles();
   const [user, setUser] = useState({ email: '', password: '' });
   // eslint-disable-next-line no-unused-vars
@@ -73,13 +76,15 @@ const Login = () => {
           data: {
             data: {
               accessToken,
-              refreshToken
+              refreshToken,
+              _id
             },
           },
         } = res;
         setSuccessful(true);
         localStorage.setItem('userToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
+        props.updateUserId('userId', _id);
         return Swal.fire({
           title: 'Logged in!',
           text: 'You will now be redirected to the homepage',
@@ -138,4 +143,14 @@ const Login = () => {
   );
 };
 
-export default Login;
+
+const mapStateToProps = state => state;
+const mapDispatchToProps = dispatch => ({
+  updateUserId: userId => dispatch({
+    type: Types.UPDATE_USER_ID, payload: {
+      userId
+    }
+  }),
+});
+const connectComponent = connect(mapStateToProps, mapDispatchToProps);
+export default connectComponent(Login);

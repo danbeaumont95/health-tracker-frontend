@@ -1,5 +1,8 @@
 /* eslint-disable no-undef */
+
 describe('tests profile page', () => {
+
+  
   it('has a title', () => {
     const db = Cypress.env('db');
 
