@@ -102,7 +102,6 @@ const Profile = (props) => {
   const { detailsClicked } = props;
   const [user, setUser] = useState('');
   const classes = useStyles();
-
   useEffect(() => {
     UserService.getMe(localStorage.getItem('userToken'))
       .then((res) => {

@@ -53,11 +53,28 @@ const updateUserDetails = async (token, user) => {
   return res;
 };
 
+const updateUserPassword = async (token, details) => {
+  const { originalPassword, newPassword } = details;
+  const refreshToken = localStorage.getItem('refreshToken');
+  const checkIfTokenValid = await TokenService.refreshToken(token, refreshToken);
+
+  if (checkIfTokenValid.data.newAccessToken) {
+    token = checkIfTokenValid.data.newAccessToken;
+  }
+  const res = await axios.put(`${url}/user/details/password`, { originalPassword, newPassword }, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    }
+  });
+  return res;
+};
+
 const exportObj = {
   login,
   register,
   getMe,
-  updateUserDetails
+  updateUserDetails,
+  updateUserPassword
 };
 
 export default exportObj;
