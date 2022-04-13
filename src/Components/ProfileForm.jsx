@@ -233,7 +233,7 @@ const ProfileForm = ({ user, detailsClicked })  => {
                   }}
                   className={classes.textField}
                   type="password"
-                  id="firstName"
+                  id="originalPassword"
                   {...register('originalPassword')}
                   onChange={handleChangePassword}
                 />
@@ -247,14 +247,14 @@ const ProfileForm = ({ user, detailsClicked })  => {
                   }}
                   className={classes.textField}
                   type="password"
-                  id="lastName"
+                  id="newPassword"
                   {...register('newPassword')}
                   onChange={handleChangePassword}
                 />
               </div>
             </div>
 
-            <Button className={classes.updateDetailsButton} type="submit" id='submitUserDetailsButton'>Update</Button>
+            <Button className={classes.updateDetailsButton} type="submit" id='submitPasswordButton'>Update</Button>
           </Box>
        
       )}

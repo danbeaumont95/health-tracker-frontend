@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 
 describe('tests profile page', () => {
-
   
   it('has a title', () => {
     const db = Cypress.env('db');
@@ -37,10 +36,8 @@ describe('tests profile page', () => {
       expect(text).to.eq('You will now be redirected to the homepage');
     });
     cy.visit('http://localhost:3001/profile');
-    cy.log(db.userId);
 
     cy.request(`http://localhost:1337/api/user/${db.userId}`).then((res) => {
-      cy.log(res.body.data.firstName, 'RES BODY');
       const { body: { data: { firstName, lastName, email, phoneNumber } } } = res;
       cy.get('input[id="firstName"]')
         .invoke('val')
@@ -67,7 +64,7 @@ describe('tests profile page', () => {
   it('updates user details successfully', () => {
     const db = Cypress.env('db');
 
-    cy.visit('http://localhost:3001/');
+    cy.visit('http://localhost:3010/');
     cy.get('[id="outlined-email"]').type(db.user);
     cy.get('[id="outlined-password"]').type(db.password);
     cy.get('#button').click();
@@ -80,13 +77,38 @@ describe('tests profile page', () => {
     cy.visit('http://localhost:3001/profile');
     cy.get('input[id="firstName"]').type('s');
     cy.get('input[id="lastName"]').type('s');
-    cy.get('input[id="email"]').type('s');
+    // cy.get('input[id="email"]').type('s');
     cy.get('input[id="phoneNumber"]').type('1');
     cy.get('#submitUserDetailsButton').click();
     cy.get('#swal2-html-container').then((message) => {
       const text = message.text();
   
       expect(text).to.eq('Details successfully updated!');
+    });
+  });
+
+  xit('updates user password details successfully', () => {
+    const db = Cypress.env('db');
+
+    cy.visit('http://localhost:3001/');
+    cy.get('[id="outlined-email"]').type(db.user);
+    cy.get('[id="outlined-password"]').type(db.password);
+    cy.get('#button').click();
+    cy.get('.swal2-popup');
+    cy.get('#swal2-html-container').then((message) => {
+      const text = message.text();
+  
+      expect(text).to.eq('You will now be redirected to the homepage');
+    });
+    cy.visit('http://localhost:3001/profile');
+    cy.get('#passwordButton').click();
+    cy.get('input[id="originalPassword"]').type('tests');
+    cy.get('input[id="newPassword"]').type('test');
+    cy.get('#submitPasswordButton').click();
+    cy.get('#swal2-html-container').then((message) => {
+      const text = message.text();
+  
+      expect(text).to.eq('Password successfully updated!');
     });
   });
 });
