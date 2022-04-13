@@ -160,7 +160,7 @@ const Profile = (props) => {
                 </ListItemIcon>
                 <ListItemText primary="Account" />
               </ListItem>
-              <ListItem disablePadding onClick={handlePasswordClicked} className={detailsClicked === 'password' ? classes.passwordClickedPasswordItem : classes.accountClickedPasswordItem}>
+              <ListItem disablePadding onClick={handlePasswordClicked} className={detailsClicked === 'password' ? classes.passwordClickedPasswordItem : classes.accountClickedPasswordItem} id="passwordButton">
                 <ListItemIcon>
                   <Lock />
                 </ListItemIcon>
