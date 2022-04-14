@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import Homepage from './Components/Homepage';
 import Profile from './Components/Profile';
+import Dashboard from './Components/Dashboard';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </Router>
     </div>
