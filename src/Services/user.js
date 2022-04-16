@@ -69,12 +69,28 @@ const updateUserPassword = async (token, details) => {
   return res;
 };
 
+const getUserPainLevelForTimePeriod = async (token, time) => {
+  const refreshToken = localStorage.getItem('refreshToken');
+  const checkIfTokenValid = await TokenService.refreshToken(token, refreshToken);
+
+  if (checkIfTokenValid.data.newAccessToken) {
+    token = checkIfTokenValid.data.newAccessToken;
+  }
+  const res = await axios.get(`${url}/user/meals/pain/${time}`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    }
+  });
+  return res;
+};
+
 const exportObj = {
   login,
   register,
   getMe,
   updateUserDetails,
-  updateUserPassword
+  updateUserPassword,
+  getUserPainLevelForTimePeriod
 };
 
 export default exportObj;
