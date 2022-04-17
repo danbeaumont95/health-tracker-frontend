@@ -10,6 +10,7 @@ import { Lock } from '@material-ui/icons';
 import ProfileForm from './ProfileForm';
 import { connect } from 'react-redux';
 import * as Types from '../store/types';
+import NavBar from './NavBar';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    background: 'linear-gradient(#a88beb, #f8ceec)',
+    backgroundColor: 'white'
   },
   title: {
     marginTop: theme.spacing(2)
@@ -37,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
   },
   drawContent: {
     width: '20%',
-    
   },
   box: {
     borderRadius: '20px 20px 0px 00px',
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   
   drawerPaper: {
     position: 'relative',
-    background: 'linear-gradient(#a88beb, #f8ceec)',
+    backgroundColor: 'white',
     borderRadius: '8px 0px 0px 14px',  
   },
   avatar: {
@@ -76,24 +76,24 @@ const useStyles = makeStyles((theme) => ({
     width: '100%'
   },
   accountClickedAccountItem: {
-    backgroundColor: '#ff99ff',
+    background: 'linear-gradient(#a88beb, #f8ceec)',
     cursor: 'pointer'
   },
   passwordClickedAccountItem: {
     cursor: 'pointer',
     '&:hover': {
-      background: '#a88beb',
+      background: '#dcd0ff',
     }
   },
   passwordClickedPasswordItem: {
-    backgroundColor: '#ff99ff',
+    background: 'linear-gradient(#a88beb, #f8ceec)',
     cursor: 'pointer',
 
   },
   accountClickedPasswordItem: {
     cursor: 'pointer',
     '&:hover': {
-      background: '#a88beb',
+      background: '#dcd0ff',
     }
   }
 }));
@@ -133,48 +133,51 @@ const Profile = (props) => {
   };
 
   return (
-    <div className={classes.allContent}>
-      <Typography variant='h3' className={classes.title} id="title">Account Settings</Typography>
-      <Box className={classes.container}>
-        <div className={classes.drawContent}>
+    <>
+      <NavBar />
+      <div className={classes.allContent}>
+        <Typography variant='h3' className={classes.title} id="title">Account Settings</Typography>
+        <Box className={classes.container}>
+          <div className={classes.drawContent}>
 
         
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper
-            }}
-            anchor="left">
+            <Drawer
+              className={classes.drawer}
+              variant="permanent"
+              classes={{
+                paper: classes.drawerPaper
+              }}
+              anchor="left">
 
-            {user.profilePicture ? (
+              {user.profilePicture ? (
 
-              <Avatar className={classes.avatar} alt="Remy Sharp" src={user.profilePicture} />
-            ) : <Avatar className={classes.avatar} alt="Remy Sharp" src={defaultProfilePhoto} />}
-            <Typography className={classes.userName} variant="h6">{user.firstName} {user.lastName}</Typography>
-            <Divider />
-            <List>
-              <ListItem disablePadding onClick={handleAccountClicked} className={detailsClicked === 'account' ? classes.accountClickedAccountItem : classes.passwordClickedAccountItem}>
-                <ListItemIcon>
-                  <HomeIcon />
-                </ListItemIcon>
-                <ListItemText primary="Account" />
-              </ListItem>
-              <ListItem disablePadding onClick={handlePasswordClicked} className={detailsClicked === 'password' ? classes.passwordClickedPasswordItem : classes.accountClickedPasswordItem} id="passwordButton">
-                <ListItemIcon>
-                  <Lock />
-                </ListItemIcon>
-                <ListItemText primary="Password"/>
-              </ListItem>
-            </List>
-          </Drawer>
-        </div>
-        <div className={classes.form}>
-          <ProfileForm user={user}/>
-        </div>
-      </Box>
+                <Avatar className={classes.avatar} alt="Remy Sharp" src={user.profilePicture} />
+              ) : <Avatar className={classes.avatar} alt="Remy Sharp" src={defaultProfilePhoto} />}
+              <Typography className={classes.userName} variant="h6">{user.firstName} {user.lastName}</Typography>
+              <Divider />
+              <List>
+                <ListItem disablePadding onClick={handleAccountClicked} className={detailsClicked === 'account' ? classes.accountClickedAccountItem : classes.passwordClickedAccountItem}>
+                  <ListItemIcon>
+                    <HomeIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Account" />
+                </ListItem>
+                <ListItem disablePadding onClick={handlePasswordClicked} className={detailsClicked === 'password' ? classes.passwordClickedPasswordItem : classes.accountClickedPasswordItem} id="passwordButton">
+                  <ListItemIcon>
+                    <Lock />
+                  </ListItemIcon>
+                  <ListItemText primary="Password"/>
+                </ListItem>
+              </List>
+            </Drawer>
+          </div>
+          <div className={classes.form}>
+            <ProfileForm user={user}/>
+          </div>
+        </Box>
 
-    </div>
+      </div>
+    </>
   );
 };
 

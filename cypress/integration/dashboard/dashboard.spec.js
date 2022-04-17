@@ -17,21 +17,30 @@ describe('tests dashboard page', () => {
     cy.visit('http://localhost:3000/dashboard');
     cy.saveLocalStorage();
   });
-  it('shows graph on the page', () => {
+  it('shows pain level in time period graph on the page', () => {
     
     cy.get('#painLevelInTimePeriodGraph').should('exist');
     cy.get('#weeklyButton').should('exist');
     
-    cy.get('#graphTitle').should('exist')
+    cy.get('#painLevelForTimePeriodTitle').should('exist')
       .then((message) => {
         const text = message.text();
         expect(text).to.eq('Weekly pain level');
       });
     cy.get('#monthlyButton').should('exist').click();
-    cy.get('#graphTitle').should('exist')
+    cy.get('#painLevelForTimePeriodTitle').should('exist')
       .then((message) => {
         const text = message.text();
         expect(text).to.eq('Monthly pain level');
       });
+  });
+  it('shows average pain level per meal graph', () => {
+    cy.get('#painLevelByMealTypeGraph').should('exist');
+    cy.get('#averagePainLevelForMealTitle').should('exist')
+      .then((message) => {
+        const text = message.text();
+        expect(text).to.eq('Average pain level per meal');
+      });
+    
   });
 });
