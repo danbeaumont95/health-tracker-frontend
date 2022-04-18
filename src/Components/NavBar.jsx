@@ -18,6 +18,13 @@ const useStyles = makeStyles(() => ({
     paddingLeft: 0,
     flexDirection: 'row'
   },
+  title: {
+    width: '10%',
+    '&:hover': {
+      cursor: 'pointer',
+      background: 'rgba(168,139,235, 0.25)'
+    }
+  },
   profileButton: {
     color: '#fff',
   },
@@ -43,7 +50,7 @@ const NavBar = () => {
     window.location.href = '/';
   };
 
-  const handleProfileClick = (route) => {
+  const handleLinkClick = (route) => {
     window.location.href=`${route}`;
   };
 
@@ -52,9 +59,9 @@ const NavBar = () => {
       <AppBar position='static' className={classes.appBar} id="appBar">
         <Toolbar>
           <Grid className={classes.grid}>
-            <Typography variant='h5' id="title">Health App</Typography>
+            <Typography variant='h5' id="title" onClick={() => handleLinkClick('/dashboard')} className={classes.title}>Health App</Typography>
           </Grid>
-          <Button className={classes.profileButton} id="profileButton" onClick={() => handleProfileClick('profile')}>
+          <Button className={classes.profileButton} id="profileButton" onClick={() => handleLinkClick('profile')}>
             Profile
           </Button>
           <Button className={classes.logoutButton} id="logoutButton" onClick={handleLogoutClick}>

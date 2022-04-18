@@ -38,10 +38,12 @@ const useStyles = makeStyles((theme) => ({
     height: '50px'
   },
   statTitle: {
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(2),
+    color: 'black'
   },
   statText: {
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
+    color: 'black'
   }
 }));
 const Dashboard = () => {
@@ -134,7 +136,7 @@ const Dashboard = () => {
                   {mostCommonPainFood}
                 </Typography>
               </div>
-              <Star style={{ color: '#a88beb' }} className={classes.icon}/>
+              <Fastfood style={{ color: '#a88beb' }} className={classes.icon}/>
             </Item>
           </Box>
         </div>
