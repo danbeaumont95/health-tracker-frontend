@@ -88,49 +88,49 @@ const Dashboard = () => {
       <div className={classes.allContent}>
         <div>
           <Box className={classes.box}>
-            <Item elevation={3}>
+            <Item elevation={3} id="mealsLoggedthisWeekCard">
               <div className={classes.cardContentItems}>
 
                 <Typography className={classes.statTitle}>
 
                 Meals logged this week
                 </Typography>
-                <Typography className={classes.statText} variant='h4' style={{ fontWeight: 'bolder' }}>
+                <Typography className={classes.statText} variant='h4' style={{ fontWeight: 'bolder' }} id="amountOfMealsLoogedThisWeek">
                   {mealsLoggedThisWeek}
                 </Typography>
               </div>
               <Fastfood style={{ color: '#a88beb' }} className={classes.icon}/>
             </Item>
-            <Item elevation={3}>
+            <Item elevation={3} id="averagePainLevelthisWeekCard">
               <div className={classes.cardContentItems}>
                 <Typography className={classes.statTitle}>
 
                 Average pain level this week
                 </Typography>
-                <Typography className={classes.statText} variant='h4' style={{ fontWeight: 'bolder' }}>
+                <Typography className={classes.statText} variant='h4' style={{ fontWeight: 'bolder' }} id="averagePainLevelthisWeek">
                   {painLevelForWeek}
                 </Typography>
               </div>
               <Star style={{ color: '#a88beb' }}  className={classes.icon}/>
             </Item>
-            <Item elevation={3}>
+            <Item elevation={3} id="averagePainLevelthisMonthCard">
               <div className={classes.cardContentItems}>
                 <Typography className={classes.statTitle}>
                   Average pain level this month
                 </Typography>
-                <Typography className={classes.statText} variant='h4' style={{ fontWeight: 'bolder' }}>
+                <Typography className={classes.statText} variant='h4' style={{ fontWeight: 'bolder' }}  id="averagePainLevelthisMonth">
                   {painLevelForMonth}
                 </Typography>
               </div>
               <Star style={{ color: '#a88beb' }} className={classes.icon}/>
             </Item>
-            <Item elevation={3}>
+            <Item elevation={3} id="foodThatCausedTheMostPainCard">
               <div className={classes.cardContentItems}>
                 <Typography className={classes.statTitle}>
               Food that caused the most pain
                 </Typography>
                
-                <Typography className={classes.statText} variant='h4' style={{ fontWeight: 'bolder' }}>
+                <Typography className={classes.statText} variant='h4' style={{ fontWeight: 'bolder' }} id="foodThatCausedTheMostPain">
                   {mostCommonPainFood}
                 </Typography>
               </div>

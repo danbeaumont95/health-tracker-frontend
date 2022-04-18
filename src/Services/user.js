@@ -70,6 +70,7 @@ const updateUserPassword = async (token, details) => {
 };
 
 const getUserPainLevelForTimePeriod = async (token, time) => {
+  console.log('CALLED');
   const refreshToken = localStorage.getItem('refreshToken');
   const checkIfTokenValid = await TokenService.refreshToken(token, refreshToken);
 
