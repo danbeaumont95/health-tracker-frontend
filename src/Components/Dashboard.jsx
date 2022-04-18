@@ -1,159 +1,145 @@
 import React, { useState, useEffect } from 'react';
 import NavBar from './NavBar';
-import moment from 'moment';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement
-} from 'chart.js';
-import { Line, Bar } from 'react-chartjs-2';
+import { makeStyles, styled } from '@material-ui/core/styles';
+import { Box, Paper, Typography } from '@material-ui/core';
+import { Fastfood, Star } from '@material-ui/icons';
+import Charts from './Charts';
 import UserService from '../Services/user';
-import { Button, Typography } from '@material-ui/core';
+
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+  height: '90px',
+  lineHeight: '60px',
+  display: 'flex',
+  flexDirection: 'row',
+  marginLeft: theme.spacing(2),
+  marginRight: theme.spacing(2),
+  marginTop: theme.spacing(4),
+  marginBottom: theme.spacing(2),
+}));
 
 const useStyles = makeStyles((theme) => ({
-  weeklyButton: {
-    background: 'linear-gradient(#a88beb, #f8ceec)',
-    marginRight: theme.spacing(1),
-    color: 'white',
-    marginTop: theme.spacing(4),
-    width: '10%',
-    '&:hover': {
-      background: 'blue',
-      color: 'white'
-    }
+  allContent: {
+    backgroundColor: '#F9FAFC',
   },
-  monthlyButton: {
-    background: 'linear-gradient(#a88beb, #f8ceec)',
-    marginLeft: theme.spacing(1),
-    color: 'white',
-    marginTop: theme.spacing(4),
-    width: '10%',
-    '&:hover': {
-      background: 'blue',
-      color: 'white'
-    }
+  box: {
+    display: 'flex',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
-  graphTitle: {
+  cardContentItems: {
+  },
+  icon: {
+    display: 'flex',
+    flex: 1,
+    width: '60px',
+    height: '50px'
+  },
+  statTitle: {
     marginTop: theme.spacing(2)
+  },
+  statText: {
+    marginTop: theme.spacing(1)
   }
 }));
 const Dashboard = () => {
-  const [timePeriod, setTimePeriod] = useState('week');
-  const [painLevelForTimePeriodLabels, setPainLevelForTimePeriodLabels] = useState([]);
-  const [painLevelForMealsLabels, setPainLevelForMealsLabels] = useState([]);
-  const [painLevelForMealsData, setPainLevelForMealsData] = useState([]);
-  const [painLevelForTimePeriodData, setPainLevelForTimePeriodData] = useState([]);
   const classes = useStyles();
+  const [painLevelForWeek, setPainLevelForWeek] = useState(0);
+  const [painLevelForMonth, setPainLevelForMonth] = useState(0);
+  const [mealsLoggedThisWeek, setMealsLoggedThisWeek] = useState(0);
+  const [mostCommonPainFood, setMostCommonPainFood] = useState('');
 
   useEffect(() => {
-    UserService.getUserPainLevelForTimePeriod(localStorage.getItem('userToken'), timePeriod)
+    UserService.getUserPainLevelForTimePeriod(localStorage.getItem('userToken'), 'week')
       .then((res) => {
-        const { data: { data: { labels, painData } } } = res;
-        setPainLevelForTimePeriodLabels(labels);
-        setPainLevelForTimePeriodData(painData);
+        const { data: { data: { painData } } } = res;
+        setPainLevelForWeek(Math.round((painData.reduce((a, b) => a + b, 0) / painData.length) * 100) / 100);
       });
-  }, [timePeriod]);
-
+  }, []);
   useEffect(() => {
-    UserService.getUserPainLevelByMealType(localStorage.getItem('userToken'))
+    UserService.getUserPainLevelForTimePeriod(localStorage.getItem('userToken'), 'month')
       .then((res) => {
-        console.log(res, 'RES');
-        const { data: { data: { labels, painData } } } = res;
-        console.log(labels, painData, 'labels, painData');
-        setPainLevelForMealsLabels(labels);
-        setPainLevelForMealsData(painData);
+        const { data: { data: { painData } } } = res;
+        setPainLevelForMonth(Math.round((painData.reduce((a, b) => a + b, 0) / painData.length) * 100) / 100);
+      });
+  }, []);
+  useEffect(() => {
+    UserService.getAmountOfMealsByTimePeriod(localStorage.getItem('userToken'), 'week')
+      .then((res) => {
+        const { data: { data } }  = res;
+        setMealsLoggedThisWeek(data);
       });
   }, []);
 
-  const painLevelForTimePeriodOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: `${timePeriod}ly pain level`,
-      },
-    },
-  };
+  useEffect(() => {
+    UserService.getMostCommonPainLevelFood(localStorage.getItem('userToken'))
+      .then((res) => {
+        const { data: { data: { mostCommonFoodWithHighPainLevel } } } = res;
 
-  const painLevelForMealsOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Average pain level for meal type',
-      },
-    },
-  };
-
-  const painLevelForTimePeriodGraphData = {
-    labels: painLevelForTimePeriodLabels.map((el) => (moment(el).format('DD/MM/YYYY'))),
-    datasets: [
-      {
-        label: `Pain level in past ${timePeriod}`,
-        data: painLevelForTimePeriodData,
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-    ],
-  };
-
-  const painLevelForMealsGraphData = {
-    labels: painLevelForMealsLabels,
-    datasets: [
-      {
-        label: 'Average pain level for meal type',
-        data: painLevelForMealsData,
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-    ],
-  };
-
-  ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-  );
-
-  const onClickWeekly = () => {
-    setTimePeriod('week');
-  };
-  const onClickMonthly = () => {
-    setTimePeriod('month');
-  };
+        setMostCommonPainFood(mostCommonFoodWithHighPainLevel);
+      });
+  });
 
   return (
     <>
       <NavBar />
       <div className={classes.allContent}>
-        <div className={classes.timePeriodGraph}>
-          <Typography variant='h4' id="painLevelForTimePeriodTitle" className={classes.graphTitle}>{timePeriod.charAt(0).toUpperCase() + timePeriod.slice(1)}ly pain level</Typography>
-          <Button className={classes.weeklyButton} onClick={onClickWeekly} id="weeklyButton">Weekly</Button>
-          <Button className={classes.monthlyButton} onClick={onClickMonthly} id="monthlyButton">Monthly</Button>
-          <Line options={painLevelForTimePeriodOptions} data={painLevelForTimePeriodGraphData} id="painLevelInTimePeriodGraph"/>
-        </div>
-        <div className={classes.mealGraph}>
-          <Typography variant='h4' id="averagePainLevelForMealTitle" className={classes.graphTitle}>Average pain level per meal</Typography>
+        <div>
+          <Box className={classes.box}>
+            <Item elevation={3}>
+              <div className={classes.cardContentItems}>
 
-          <Bar options={painLevelForMealsOptions} data={painLevelForMealsGraphData} id="painLevelByMealTypeGraph" />
+                <Typography className={classes.statTitle}>
+
+                Meals logged this week
+                </Typography>
+                <Typography className={classes.statText} variant='h4' style={{ fontWeight: 'bolder' }}>
+                  {mealsLoggedThisWeek}
+                </Typography>
+              </div>
+              <Fastfood style={{ color: '#a88beb' }} className={classes.icon}/>
+            </Item>
+            <Item elevation={3}>
+              <div className={classes.cardContentItems}>
+                <Typography className={classes.statTitle}>
+
+                Average pain level this week
+                </Typography>
+                <Typography className={classes.statText} variant='h4' style={{ fontWeight: 'bolder' }}>
+                  {painLevelForWeek}
+                </Typography>
+              </div>
+              <Star style={{ color: '#a88beb' }}  className={classes.icon}/>
+            </Item>
+            <Item elevation={3}>
+              <div className={classes.cardContentItems}>
+                <Typography className={classes.statTitle}>
+                  Average pain level this month
+                </Typography>
+                <Typography className={classes.statText} variant='h4' style={{ fontWeight: 'bolder' }}>
+                  {painLevelForMonth}
+                </Typography>
+              </div>
+              <Star style={{ color: '#a88beb' }} className={classes.icon}/>
+            </Item>
+            <Item elevation={3}>
+              <div className={classes.cardContentItems}>
+                <Typography className={classes.statTitle}>
+              Food that caused the most pain
+                </Typography>
+               
+                <Typography className={classes.statText} variant='h4' style={{ fontWeight: 'bolder' }}>
+                  {mostCommonPainFood}
+                </Typography>
+              </div>
+              <Star style={{ color: '#a88beb' }} className={classes.icon}/>
+            </Item>
+          </Box>
         </div>
+        <Charts/>
+ 
       </div>
     </>
   );
