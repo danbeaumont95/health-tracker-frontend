@@ -99,6 +99,36 @@ const getUserPainLevelByMealType = async (token) => {
   return res;
 };
 
+const getAmountOfMealsByTimePeriod = async (token, time) => {
+  const refreshToken = localStorage.getItem('refreshToken');
+  const checkIfTokenValid = await TokenService.refreshToken(token, refreshToken);
+
+  if (checkIfTokenValid.data.newAccessToken) {
+    token = checkIfTokenValid.data.newAccessToken;
+  }
+  const res = await axios.get(`${url}/user/meals/amount/${time}`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    }
+  });
+  return res;
+};
+
+const getMostCommonPainLevelFood = async (token) => {
+  const refreshToken = localStorage.getItem('refreshToken');
+  const checkIfTokenValid = await TokenService.refreshToken(token, refreshToken);
+
+  if (checkIfTokenValid.data.newAccessToken) {
+    token = checkIfTokenValid.data.newAccessToken;
+  }
+  const res = await axios.get(`${url}/user/meals/worstPain`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    }
+  });
+  return res;
+};
+
 const exportObj = {
   login,
   register,
@@ -106,7 +136,9 @@ const exportObj = {
   updateUserDetails,
   updateUserPassword,
   getUserPainLevelForTimePeriod,
-  getUserPainLevelByMealType
+  getUserPainLevelByMealType,
+  getAmountOfMealsByTimePeriod,
+  getMostCommonPainLevelFood
 };
 
 export default exportObj;

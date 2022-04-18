@@ -12,7 +12,6 @@ import { connect } from 'react-redux';
 import * as Types from '../store/types';
 import NavBar from './NavBar';
 
-
 const useStyles = makeStyles((theme) => ({
   allContent: {
     height: '100vh',
