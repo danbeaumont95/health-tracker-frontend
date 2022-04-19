@@ -1,10 +1,12 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import NavBar from './NavBar';
 import { makeStyles, styled } from '@material-ui/core/styles';
-import { Box, Paper, Typography } from '@material-ui/core';
+import { Box, Button, Paper, Typography } from '@material-ui/core';
 import { Fastfood, Star } from '@material-ui/icons';
 import Charts from './Charts';
 import UserService from '../Services/user';
+import PostMealForm from './PostMealForm';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -23,6 +25,12 @@ const Item = styled(Paper)(({ theme }) => ({
 const useStyles = makeStyles((theme) => ({
   allContent: {
     backgroundColor: '#F9FAFC',
+    // pointerEvents: 'none',
+  },
+  allContentPopUp: {
+    filter: 'blur(10px)',
+    zIndex: -1,
+    pointerEvents: 'none',
   },
   box: {
     display: 'flex',
@@ -44,6 +52,12 @@ const useStyles = makeStyles((theme) => ({
   statText: {
     marginTop: theme.spacing(1),
     color: 'black'
+  },
+  popUpForm: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+    zIndex: 2,
   }
 }));
 const Dashboard = () => {
@@ -52,6 +66,7 @@ const Dashboard = () => {
   const [painLevelForMonth, setPainLevelForMonth] = useState(0);
   const [mealsLoggedThisWeek, setMealsLoggedThisWeek] = useState(0);
   const [mostCommonPainFood, setMostCommonPainFood] = useState('');
+  const [showPopUp, setShowPopUp] = useState(false);
 
   useEffect(() => {
     UserService.getUserPainLevelForTimePeriod(localStorage.getItem('userToken'), 'week')
@@ -84,10 +99,19 @@ const Dashboard = () => {
       });
   });
 
+  const handlePopUpClick = () => {
+    setShowPopUp(prevCheck => !prevCheck);
+  };
+
   return (
     <>
       <NavBar />
-      <div className={classes.allContent}>
+      <Button onClick={handlePopUpClick}>Log a meal</Button>
+      <div className={classes.popUpForm}>
+
+        {showPopUp ? <PostMealForm /> : <></>}
+      </div>
+      <div className={!showPopUp ? classes.allContent : classes.allContentPopUp}>
         <div>
           <Box className={classes.box}>
             <Item elevation={3} id="mealsLoggedthisWeekCard">
