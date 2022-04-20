@@ -19,13 +19,23 @@ import {  Button, Typography } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   allContent: {
     display: 'flex',
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(2),
+    ['@media (max-width:800px)']: {
+      flexDirection: 'column'
+    },
   },
   timePeriodContent: {
     marginLeft: theme.spacing(4),
     backgroundColor: 'white',
     borderRadius: 10,
-    marginRight: theme.spacing(4)
+    marginRight: theme.spacing(4),
+    ['@media (max-width:800px)']: {
+      
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      height: '50%',
+      width: '90%'
+    },
   },
   graphTitle: {
     marginTop: theme.spacing(2)
@@ -54,18 +64,33 @@ const useStyles = makeStyles((theme) => ({
   },
   timePeriodGraph: {
     height: '500px',
-    width: '700px'
+    width: '700px',
+    ['@media (max-width:800px)']: {
+      height: '80%',
+      width: '100%',
+    },
   },
   mealTypeGraph: {
     height: '500px',
     width: '400px',
     margin: '0 auto',
+    ['@media (max-width:800px)']: {
+      height: '300px',
+      width: '100%',
+    },
   },
   mealGraphContent: {
     flex: 1,
     backgroundColor: 'white',
     borderRadius: 10,
-    marginRight: theme.spacing(4)
+    marginRight: theme.spacing(4),
+    ['@media (max-width:800px)']: {
+      marginTop: theme.spacing(2),
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      height: '20%',
+      width: '90%'
+    },
   }
 }));
 const Charts = () => {
@@ -126,7 +151,7 @@ const Charts = () => {
     labels: painLevelForTimePeriodLabels.map((el) => (moment(el).format('DD/MM/YYYY'))),
     datasets: [
       {
-        label: `Pain level in past ${timePeriod}`,
+        label: 'Average pain level for day',
         data: painLevelForTimePeriodData,
         borderColor: '#a88beb',
         backgroundColor: '#a88beb',
