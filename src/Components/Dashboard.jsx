@@ -58,6 +58,30 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignContent: 'center',
     zIndex: 2,
+  },
+  monthlyButton: {
+    background: 'linear-gradient(#a88beb, #f8ceec)',
+    marginLeft: theme.spacing(1),
+    color: 'white',
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
+    width: '10%',
+    '&:hover': {
+      background: 'blue',
+      color: 'white'
+    }
+  },
+  cancelButton: {
+    background: 'red',
+    marginLeft: theme.spacing(1),
+    color: 'white',
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
+    width: '10%',
+    '&:hover': {
+      background: 'red',
+      color: 'black'
+    }
   }
 }));
 const Dashboard = () => {
@@ -106,7 +130,9 @@ const Dashboard = () => {
   return (
     <>
       <NavBar />
-      <Button onClick={handlePopUpClick}>Log a meal</Button>
+      {!showPopUp ? (
+        <Button onClick={handlePopUpClick} className={classes.monthlyButton}>Log a meal</Button>
+      ) : <Button onClick={handlePopUpClick} className={classes.cancelButton}>Cancel</Button>}
       <div className={classes.popUpForm}>
 
         {showPopUp ? <PostMealForm /> : <></>}
