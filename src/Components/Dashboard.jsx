@@ -131,8 +131,8 @@ const Dashboard = () => {
     <>
       <NavBar />
       {!showPopUp ? (
-        <Button onClick={handlePopUpClick} className={classes.monthlyButton}>Log a meal</Button>
-      ) : <Button onClick={handlePopUpClick} className={classes.cancelButton}>Cancel</Button>}
+        <Button onClick={handlePopUpClick} className={classes.monthlyButton} id="logMealButton">Log a meal</Button>
+      ) : <Button onClick={handlePopUpClick} className={classes.cancelButton} id="cancelMealButton">Cancel</Button>}
       <div className={classes.popUpForm}>
 
         {showPopUp ? <PostMealForm /> : <></>}
