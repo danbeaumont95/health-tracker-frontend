@@ -85,7 +85,9 @@ const PostMealForm = () => {
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' }
         }}
-        onSubmit={onSubmit}>
+        onSubmit={onSubmit}
+        id="postMealForm"
+      >
         <div className={classes.nameBoxes}>
           <div className={classes.firstNameDiv}>
 
@@ -128,7 +130,7 @@ const PostMealForm = () => {
             />
           </div>
         </div>
-        <Button className={classes.submitMealButton} type="submit" id='submitUserDetailsButton'>Submit</Button>
+        <Button className={classes.submitMealButton} type="submit" id='submitMealButton'>Submit</Button>
       </Box>
     </div>
   );

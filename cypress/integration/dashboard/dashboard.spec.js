@@ -7,7 +7,7 @@ describe('tests dashboard page', () => {
   beforeEach(() => {
     const db = Cypress.env('db');
 
-    cy.visit('http://localhost:3000');
+    cy.visit('http://localhost:3001');
     cy.get('[id="outlined-email"]').type(db.user);
     cy.get('[id="outlined-password"]').type(db.password);
     cy.get('#button').click();
@@ -16,7 +16,7 @@ describe('tests dashboard page', () => {
   
       expect(text).to.eq('You will now be redirected to the homepage');
     });
-    cy.visit('http://localhost:3000/dashboard');
+    cy.visit('http://localhost:3001/dashboard');
     cy.saveLocalStorage();
 
   });
@@ -45,7 +45,7 @@ describe('tests dashboard page', () => {
         expect(text).to.eq('Average pain level per meal');
       });
   });
-  it.only('shows statistic cards and shows correct value from api call', () => {
+  it('shows statistic cards and shows correct value from api call', () => {
     const token = localStorage.getItem('userToken');
     cy.get('#mealsLoggedthisWeekCard').should('exist');
 
@@ -116,5 +116,42 @@ describe('tests dashboard page', () => {
           expect(mostCommonFoodWithHighPainLevel).to.equal(text);
         });
       });
+  });
+  it('shows log a meal button and creates a meal successfully', () => {
+    cy.get('#logMealButton').should('exist').click();
+    cy.get('#cancelMealButton').should('exist');
+    cy.get('#postMealForm').should('exist');
+
+    cy.get('#mealType').should('exist').type('breakfast');
+    cy.get('#meal').should('exist').type('smoothie');
+    cy.get('#painLevel').should('exist').type('2');
+    cy.get('#submitMealButton').should('exist').click();
+    cy.intercept({
+      method: 'GET',
+      url: 'http://localhost:1337/api/user/meals/worstPain',
+    }).as('worstPainApiCall');
+    cy.wait('@worstPainApiCall');
+    cy.get('#swal2-html-container').then((message) => {
+      const text = message.text();
+  
+      expect(text).to.eq('Meal logged');
+    });
+  });
+  it('shows correct error when creating meal but missing required field', () => {
+    cy.get('#logMealButton').should('exist').click();
+    cy.get('#meal').should('exist').type('smoothie');
+    cy.get('#painLevel').should('exist').type('2');
+    cy.get('#submitMealButton').should('exist').click();
+
+    cy.intercept({
+      method: 'GET',
+      url: 'http://localhost:1337/api/user/meals/worstPain',
+    }).as('worstPainApiCall');
+    cy.wait('@worstPainApiCall');
+    cy.get('#swal2-html-container').then((message) => {
+      const text = message.text();
+  
+      expect(text).to.eq('Please try again');
+    });
   });
 });
