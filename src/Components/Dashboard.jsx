@@ -20,22 +20,30 @@ const Item = styled(Paper)(({ theme }) => ({
   marginRight: theme.spacing(2),
   marginTop: theme.spacing(4),
   marginBottom: theme.spacing(2),
+  ['@media (max-width:800px)']: {
+    height: '100%',
+    width: '40%'
+  },
 }));
 
 const useStyles = makeStyles((theme) => ({
   allContent: {
     backgroundColor: '#F9FAFC',
-    // pointerEvents: 'none',
   },
   allContentPopUp: {
     filter: 'blur(10px)',
     zIndex: -1,
     pointerEvents: 'none',
+    
   },
   box: {
     display: 'flex',
     alignContent: 'center',
     justifyContent: 'center',
+    ['@media (max-width:800px)']: {
+      height: '100%',
+      flexWrap: 'wrap',
+    },
   },
   cardContentItems: {
   },
@@ -82,6 +90,9 @@ const useStyles = makeStyles((theme) => ({
       background: 'red',
       color: 'black'
     }
+  },
+  allItems: {
+
   }
 }));
 const Dashboard = () => {
@@ -138,7 +149,7 @@ const Dashboard = () => {
         {showPopUp ? <PostMealForm /> : <></>}
       </div>
       <div className={!showPopUp ? classes.allContent : classes.allContentPopUp}>
-        <div>
+        <div className={classes.allItems}>
           <Box className={classes.box}>
             <Item elevation={3} id="mealsLoggedthisWeekCard">
               <div className={classes.cardContentItems}>
