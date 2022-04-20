@@ -14,10 +14,22 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(4),
     position: 'fixed',
     zIndex: 2,
+    backgroundColor: '#F9FAFC',
   },
   formBox: {
-    backgroundColor: 'white',
-    width: '100%',
+    width: '500px',
+  },
+  submitMealButton: {
+    background: 'linear-gradient(#a88beb, #f8ceec)',
+    marginLeft: theme.spacing(1),
+    color: 'white',
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
+    width: '30%',
+    '&:hover': {
+      background: 'blue',
+      color: 'white'
+    }
   }
 }));
 const PostMealForm = () => {
@@ -58,6 +70,9 @@ const PostMealForm = () => {
           title: 'Success',
           text: 'Meal logged'
         });
+      })
+      .then(() => {
+        window.location.href = '/dashboard';
       });
   };
   return (
@@ -113,7 +128,7 @@ const PostMealForm = () => {
             />
           </div>
         </div>
-        <Button className={classes.updateDetailsButton} type="submit" id='submitUserDetailsButton'>Submit</Button>
+        <Button className={classes.submitMealButton} type="submit" id='submitUserDetailsButton'>Submit</Button>
       </Box>
     </div>
   );
