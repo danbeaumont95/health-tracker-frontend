@@ -20,23 +20,11 @@ const useStyles = makeStyles((theme) => ({
   allContent: {
     display: 'flex',
     marginTop: theme.spacing(2),
-    ['@media (max-width:800px)']: {
+    ['@media (max-width:1000px)']: {
       flexDirection: 'column'
     },
   },
-  timePeriodContent: {
-    marginLeft: theme.spacing(4),
-    backgroundColor: 'white',
-    borderRadius: 10,
-    marginRight: theme.spacing(4),
-    ['@media (max-width:800px)']: {
-      
-      marginLeft: 'auto',
-      marginRight: 'auto',
-      height: '50%',
-      width: '90%'
-    },
-  },
+
   graphTitle: {
     marginTop: theme.spacing(2)
   },
@@ -66,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     height: '500px',
     width: '700px',
     ['@media (max-width:800px)']: {
-      height: '80%',
+      height: '300px',
       width: '100%',
     },
   },
@@ -77,6 +65,25 @@ const useStyles = makeStyles((theme) => ({
     ['@media (max-width:800px)']: {
       height: '300px',
       width: '100%',
+    },
+  },
+  timePeriodContent: {
+    marginLeft: theme.spacing(4),
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginRight: theme.spacing(4),
+    ['@media (max-width:800px)']: {
+      
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      height: '50%',
+      width: '90%'
+    },
+    ['@media (min-width:2000px)']: {
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      width: '45%',
+      maxWidth: '900px'
     },
   },
   mealGraphContent: {
@@ -90,6 +97,12 @@ const useStyles = makeStyles((theme) => ({
       marginRight: 'auto',
       height: '20%',
       width: '90%'
+    },
+    ['@media (min-width:2000px)']: {
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      width: '45%',
+      maxWidth: '900px'
     },
   }
 }));

@@ -20,9 +20,21 @@ const Item = styled(Paper)(({ theme }) => ({
   marginRight: theme.spacing(2),
   marginTop: theme.spacing(4),
   marginBottom: theme.spacing(2),
-  ['@media (max-width:800px)']: {
+  ['@media screen and (min-width:700px) and (max-height:1100px))']: {
     height: '100%',
-    width: '40%'
+    width: '40%',
+  },
+  ['@media (min-width:300px and max-height:670px)']: {
+    height: '100%',
+    width: '40%',
+  },
+  ['@media (min-height:500px and max-width:900px)']: {
+    height: '100%',
+    width: '40%',
+  },
+  ['@media (max-width:1000px)']: {
+    height: '120px',
+    width: '40%',
   },
 }));
 
