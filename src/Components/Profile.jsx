@@ -227,11 +227,13 @@ const Profile = (props) => {
                       accept="image/*"
                       style={{ display: 'none' }}
                       onChange={uploadProfilePicture}
+                      id="updateProfilePicInput"
                     />
                     <Button
                       onClick={() => uploadInputRef.current && uploadInputRef.current.click()}
                       variant="contained"
                       className={classes.updateProfilePicButton}
+                      id="updateProfilePicButton"
                     >
                       Update profile picture
                     </Button>

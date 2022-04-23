@@ -111,4 +111,21 @@ describe('tests profile page', () => {
       expect(text).to.eq('Password successfully updated!');
     });
   });
+  it.only('has update profile picture button', () => {
+    const db = Cypress.env('db');
+
+    cy.visit('http://localhost:3001/');
+    cy.get('[id="outlined-email"]').type(db.user);
+    cy.get('[id="outlined-password"]').type(db.password);
+    cy.get('#button').click();
+    cy.get('.swal2-popup');
+    cy.get('#swal2-html-container').then((message) => {
+      const text = message.text();
+  
+      expect(text).to.eq('You will now be redirected to the homepage');
+    });
+    cy.visit('http://localhost:3001/profile');
+    cy.get('#updateProfilePicButton').should('exist');
+    cy.get('#updateProfilePicInput').should('exist').click({ force: true });
+  });
 });

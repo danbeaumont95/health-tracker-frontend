@@ -1,1 +1,0 @@
-Tomorrow monday change password section of profile page to change password, need to add back-end functionality and maybe split up account and password sections to different components. Maybe a dynamic component if can do it. Pass in field names, etc as props
