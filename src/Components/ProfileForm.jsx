@@ -13,19 +13,39 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   box: {
-    width: '100%'
+    width: '100%',
+    ['@media (max-width:800px)']: {
+    },
+   
   },
   nameBoxes: {
     display: 'flex',
     width: '100%',
     justifyContent: 'center',
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(2),
+    ['@media (max-width:800px)']: {
+      display: 'block',
+      justifyContent: 'center',
+      alignContent: 'center',
+      alignItems: 'center'
+    },
   },
   firstNameDiv: { 
-    marginRight: theme.spacing(2) 
+    marginRight: theme.spacing(2),
+    ['@media (max-width:800px)']: {
+
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      marginBottom: theme.spacing(3),
+    },
   },
   secondNameDiv: { 
-    marginLeft: theme.spacing(2) 
+    marginLeft: theme.spacing(2),
+    ['@media (max-width:800px)']: {
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      marginBottom: theme.spacing(3)
+    },
   },
   textField: {
   },
@@ -37,7 +57,11 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       background: 'linear-gradient(#a88beb, #f8ceec)',
       color: 'black'
-    }
+    },
+    ['@media (max-width:800px)']: {
+      marginBottom: theme.spacing(2),
+      width: '40%'
+    },
   }
 }));
 const ProfileForm = ({ user, detailsClicked })  => {
