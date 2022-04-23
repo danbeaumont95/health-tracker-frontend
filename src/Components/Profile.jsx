@@ -18,7 +18,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    ['@media (max-width:800px)']: {
+      height: '100%',
+      display: 'block',
+    },
   },
   title: {
     marginTop: theme.spacing(2)
@@ -32,11 +36,26 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '20px',
     boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
     ['@media (max-width:800px)']: {
-      width: '90%'
+      width: '90%',
+      height: '100%',
+      display: 'block',
+      marginRight: 'auto',
+      marginLeft: 'auto'
+    },
+    ['@media (min-width:800px) and (max-width:1000px)']: {
+      display: 'flex',
+      marginTop: theme.spacing(4),
+      width: '90%',
+      height: '300px',
+      padding: 0,
+      borderRadius: '20px',
     },
   },
   drawContent: {
     width: '20%',
+    ['@media (max-width:800px)']: {
+      width: '100%',
+    },
   },
   box: {
     borderRadius: '20px 20px 0px 00px',
@@ -45,20 +64,36 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'red',
     height: '8%',
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    ['@media (max-width:800px)']: {
+      display: 'block'
+    },
   },
-  content: {
-    display: 'flex',
-  },
+
   drawer: {
     flex: 1,
     position: 'relative',
+    ['@media (max-width:800px)']: {
+      width: '90%',
+      display: 'block',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+    ['@media (min-width:800px) and (max-width:900px)']: {
+      width: '100%',
+    }
   },
-  
+  list: {
+    ['@media (max-width:800px)']: {
+    },
+  },
   drawerPaper: {
     position: 'relative',
     backgroundColor: 'white',
-    borderRadius: '8px 0px 0px 14px',  
+    borderRadius: '8px 0px 0px 14px', 
+    ['@media (max-width:800px)']: {
+      display: 'flex',
+    }, 
   },
   avatar: {
     border: '2px solid white',
@@ -72,17 +107,23 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2)
   },
   form: {
-    width: '100%'
+    width: '100%',
+    ['@media (max-width:800px)']: {
+      flex: 1,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
   },
   accountClickedAccountItem: {
     background: 'linear-gradient(#a88beb, #f8ceec)',
-    cursor: 'pointer'
+    cursor: 'pointer',
   },
   passwordClickedAccountItem: {
     cursor: 'pointer',
     '&:hover': {
       background: '#dcd0ff',
-    }
+    },
+
   },
   passwordClickedPasswordItem: {
     background: 'linear-gradient(#a88beb, #f8ceec)',
@@ -154,7 +195,7 @@ const Profile = (props) => {
               ) : <Avatar className={classes.avatar} alt="Remy Sharp" src={defaultProfilePhoto} />}
               <Typography className={classes.userName} variant="h6">{user.firstName} {user.lastName}</Typography>
               <Divider />
-              <List>
+              <List className={classes.list}>
                 <ListItem disablePadding onClick={handleAccountClicked} className={detailsClicked === 'account' ? classes.accountClickedAccountItem : classes.passwordClickedAccountItem}>
                   <ListItemIcon>
                     <HomeIcon />
