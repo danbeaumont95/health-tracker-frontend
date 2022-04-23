@@ -129,6 +129,24 @@ const getMostCommonPainLevelFood = async (token) => {
   return res;
 };
 
+const updateProfilePicture = async (token, file) => {
+
+  let formData = new FormData();
+  formData.append('file', file);
+  const refreshToken = localStorage.getItem('refreshToken');
+  const checkIfTokenValid = await TokenService.refreshToken(token, refreshToken);
+
+  if (checkIfTokenValid.data.newAccessToken) {
+    token = checkIfTokenValid.data.newAccessToken;
+  }
+  const res = await axios.put(`${url}/user/profile/photo`, formData, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    }
+  });
+  return res;
+};
+
 const exportObj = {
   login,
   register,
@@ -138,7 +156,8 @@ const exportObj = {
   getUserPainLevelForTimePeriod,
   getUserPainLevelByMealType,
   getAmountOfMealsByTimePeriod,
-  getMostCommonPainLevelFood
+  getMostCommonPainLevelFood,
+  updateProfilePicture
 };
 
 export default exportObj;

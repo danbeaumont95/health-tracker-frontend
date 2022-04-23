@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     width: '100%',
     justifyContent: 'center',
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(5),
     ['@media (max-width:800px)']: {
       display: 'block',
       justifyContent: 'center',

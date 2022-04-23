@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Swal from 'sweetalert2';
 import UserService from '../Services/user';
 import { makeStyles } from '@material-ui/core/styles';
-import { Avatar, Box, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
+import { Avatar, Box, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Typography, Button } from '@material-ui/core';
 import defaultProfilePhoto from '../Images/defaultProfilePhoto.jpeg';
 import  HomeIcon  from '@material-ui/icons/HomeOutlined';
 import { Lock } from '@material-ui/icons';
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     marginTop: theme.spacing(4),
     width: '70%',
-    height: '300px',
+    height: '351px',
     padding: 0,
     borderRadius: '20px',
     boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
       marginTop: theme.spacing(4),
       width: '90%',
-      height: '300px',
+      height: '350px',
       padding: 0,
       borderRadius: '20px',
     },
@@ -135,13 +135,19 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       background: '#dcd0ff',
     }
+  },
+  updateProfilePicButton: {
+    background: 'linear-gradient(#a88beb, #f8ceec)',
+    fontSize: 12
   }
 }));
 
 const Profile = (props) => {
   const { detailsClicked } = props;
   const [user, setUser] = useState('');
+  const [profilePhoto, setProfilePhoto] = useState('');
   const classes = useStyles();
+  const uploadInputRef = useRef(null);
   useEffect(() => {
     UserService.getMe(localStorage.getItem('userToken'))
       .then((res) => {
@@ -161,8 +167,8 @@ const Profile = (props) => {
           text: '[BadRequest] Error finding profile, please try again later'
         });
       });
-  // }, [user]);
-  }, []);
+  }, [profilePhoto]);
+  
 
   const handleAccountClicked = () => {
     props.updateDetailsClicked('account');
@@ -172,14 +178,36 @@ const Profile = (props) => {
     props.updateDetailsClicked('password');
   };
 
+  const uploadProfilePicture = (e) => {
+    const currentFile = e.target.files[0];
+
+    UserService.updateProfilePicture(localStorage.getItem('userToken'), currentFile)
+      .then((res) => {
+        const { data: { success, data } } = res;
+        if (!success) {
+          return Swal.fire({
+            title: 'Error',
+            text: 'Error updating profile picture'
+          });
+        }
+        return Swal.fire({
+          title: 'Success',
+          text: 'New profile photo added!'
+        })
+          .then(() => {
+            setProfilePhoto(data.profilePicture);
+          });
+      });
+  };
+
   return (
     <>
       <NavBar />
+     
       <div className={classes.allContent}>
         <Typography variant='h3' className={classes.title} id="title">Account Settings</Typography>
         <Box className={classes.container}>
           <div className={classes.drawContent}>
-
         
             <Drawer
               className={classes.drawer}
@@ -190,9 +218,28 @@ const Profile = (props) => {
               anchor="left">
 
               {user.profilePicture ? (
+                <>
+   
+                  <>
+                    <input
+                      ref={uploadInputRef}
+                      type="file"
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      onChange={uploadProfilePicture}
+                    />
+                    <Button
+                      onClick={() => uploadInputRef.current && uploadInputRef.current.click()}
+                      variant="contained"
+                      className={classes.updateProfilePicButton}
+                    >
+                      Update profile picture
+                    </Button>
+                  </>
 
-                <Avatar className={classes.avatar} alt="Remy Sharp" src={user.profilePicture} />
-              ) : <Avatar className={classes.avatar} alt="Remy Sharp" src={defaultProfilePhoto} />}
+                  <Avatar className={classes.avatar} alt="profile pic" src={user.profilePicture}/>
+                </>
+              ) : <Avatar className={classes.avatar} alt="profile pic" src={defaultProfilePhoto} />}
               <Typography className={classes.userName} variant="h6">{user.firstName} {user.lastName}</Typography>
               <Divider />
               <List className={classes.list}>
