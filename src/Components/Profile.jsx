@@ -11,6 +11,7 @@ import ProfileForm from './ProfileForm';
 import { connect } from 'react-redux';
 import * as Types from '../store/types';
 import NavBar from './NavBar';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const useStyles = makeStyles((theme) => ({
   allContent: {
@@ -144,13 +145,14 @@ const useStyles = makeStyles((theme) => ({
   },
   swal: {
     zIndex: 1300
-  }
+  },
 }));
 
 const Profile = (props) => {
   const { detailsClicked } = props;
   const [user, setUser] = useState('');
   const [profilePhoto, setProfilePhoto] = useState('');
+  const [updatePicLoading, setUpdatePicLoading] = useState(false);
   const classes = useStyles();
   const uploadInputRef = useRef(null);
   useEffect(() => {
@@ -186,15 +188,18 @@ const Profile = (props) => {
   const uploadProfilePicture = (e) => {
     const currentFile = e.target.files[0];
 
+    setUpdatePicLoading(true);
     UserService.updateProfilePicture(localStorage.getItem('userToken'), currentFile)
       .then((res) => {
         const { data: { success, data } } = res;
         if (!success) {
+          setUpdatePicLoading(false);
           return Swal.fire({
             title: 'Error',
             text: 'Error updating profile picture',
           });
         }
+        setUpdatePicLoading(false);
         return Swal.fire({
           title: 'Success',
           text: 'New profile photo added!',
@@ -209,12 +214,15 @@ const Profile = (props) => {
   return (
     <>
       <NavBar />
-     
+      {updatePicLoading ? (
+        <ClipLoader color="blue" size={20}/>
+
+      ) : null}
       <div className={classes.allContent}>
         <Typography variant='h3' className={classes.title} id="title">Account Settings</Typography>
         <Box className={classes.container}>
           <div className={classes.drawContent}>
-        
+    
             <Drawer
               className={classes.drawer}
               variant="permanent"
@@ -225,7 +233,7 @@ const Profile = (props) => {
 
               {user.profilePicture ? (
                 <>
-   
+
                   <>
                     <input
                       ref={uploadInputRef}
@@ -235,13 +243,14 @@ const Profile = (props) => {
                       onChange={uploadProfilePicture}
                       id="updateProfilePicInput"
                     />
+                 
                     <Button
                       onClick={() => uploadInputRef.current && uploadInputRef.current.click()}
                       variant="contained"
                       className={classes.updateProfilePicButton}
                       id="updateProfilePicButton"
                     >
-                      Update profile picture
+                  Update profile picture
                     </Button>
                   </>
 
@@ -272,6 +281,8 @@ const Profile = (props) => {
         </Box>
 
       </div>
+     
+      
     </>
   );
 };

@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import { connect } from 'react-redux';
 import * as Types from '../store/types';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const useStyles = makeStyles((theme) => ({
   allContent: {
@@ -69,6 +70,8 @@ const ProfileForm = ({ user, detailsClicked })  => {
   const [newUserPassword, setNewUserPassword] = useState({});
   const classes = useStyles();
   const [successful, setSuccessful] = useState(false);
+  const [updateDetailsLoading, setUpdateDetailsLoading] = useState(false);
+
 
   const {
     register,
@@ -89,6 +92,7 @@ const ProfileForm = ({ user, detailsClicked })  => {
   };
 
   const onSubmit = (e) => {
+    setUpdateDetailsLoading(true);
     e.preventDefault();
     setSuccessful(false);
 
@@ -107,12 +111,14 @@ const ProfileForm = ({ user, detailsClicked })  => {
       .then((res) => {
         const { success } = res.data;
         if (success === false) {
+          setUpdateDetailsLoading(false);
           return Swal.fire({
             title: 'Error',
             text: '[BadRequest] Error updating details, please try again later',
           });
         }
         setSuccessful(true);
+        setUpdateDetailsLoading(false);
         return Swal.fire({
           title: 'Successful',
           text: 'Details successfully updated!',
@@ -127,6 +133,7 @@ const ProfileForm = ({ user, detailsClicked })  => {
   };
 
   const onPasswordChangeSubmit = (e) => {
+    setUpdateDetailsLoading(true);
     e.preventDefault();
     setSuccessful(false);
 
@@ -134,12 +141,14 @@ const ProfileForm = ({ user, detailsClicked })  => {
       .then((res) => {
         const { success, message } = res.data;
         if (success === false) {
+          setUpdateDetailsLoading(false);
           return Swal.fire({
             title: 'Error',
             text: `${message}`
           });
         }
         setSuccessful(true);
+        setUpdateDetailsLoading(false);
         return Swal.fire({
           title: 'Successful',
           text: 'Password successfully updated!'
@@ -169,6 +178,10 @@ const ProfileForm = ({ user, detailsClicked })  => {
             }}
             onSubmit={onSubmit}
           >
+            {updateDetailsLoading ? (
+              <ClipLoader color="blue" size={20}/>
+  
+            ) : null}
             <div className={classes.nameBoxes}>
               <div className={classes.firstNameDiv}>
 
@@ -246,6 +259,10 @@ const ProfileForm = ({ user, detailsClicked })  => {
             }}
             onSubmit={onPasswordChangeSubmit}
           >
+            {updateDetailsLoading ? (
+              <ClipLoader color="blue" size={20}/>
+  
+            ) : null}
             <div className={classes.nameBoxes}>
               <div className={classes.firstNameDiv}>
 

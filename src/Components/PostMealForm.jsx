@@ -5,6 +5,7 @@ import { Box, Button, TextField, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MealService from '../Services/meal';
 import { useForm } from 'react-hook-form';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const useStyles = makeStyles((theme) => ({
   allContent: {
@@ -35,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 const PostMealForm = () => {
   const classes = useStyles();
   const [newMeal, setNewMeal] = useState({});
+  const [updateDetailsLoading, setUpdateDetailsLoading] = useState(false);
 
   const {
     register,
@@ -48,6 +50,7 @@ const PostMealForm = () => {
   };
 
   const onSubmit = (e) => {
+    setUpdateDetailsLoading(true);
     const { meal, mealType, painLevel } = newMeal;
     const mealObj = {
       meal,
@@ -61,11 +64,13 @@ const PostMealForm = () => {
       .then((res) => {
         const { data: { success } } = res;
         if (success !== true) {
+          setUpdateDetailsLoading(false);
           return Swal.fire({
             title: 'Error',
             text: 'Please try again'
           });
         }
+        setUpdateDetailsLoading(false);
         return Swal.fire({
           title: 'Success',
           text: 'Meal logged'
@@ -89,6 +94,10 @@ const PostMealForm = () => {
         id="postMealForm"
       >
         <div className={classes.nameBoxes}>
+          {updateDetailsLoading ? (
+            <ClipLoader color="blue" size={20}/>
+  
+          ) : null}
           <div className={classes.firstNameDiv}>
 
             <Typography>Meal Type</Typography>
