@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2)
   },
   container: {
+    zIndex: 0,
     display: 'flex',
     marginTop: theme.spacing(4),
     width: '70%',
@@ -71,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   drawer: {
+    zIndex: 0,
     flex: 1,
     position: 'relative',
     ['@media (max-width:800px)']: {
@@ -139,6 +141,9 @@ const useStyles = makeStyles((theme) => ({
   updateProfilePicButton: {
     background: 'linear-gradient(#a88beb, #f8ceec)',
     fontSize: 12
+  },
+  swal: {
+    zIndex: 1300
   }
 }));
 
@@ -187,12 +192,13 @@ const Profile = (props) => {
         if (!success) {
           return Swal.fire({
             title: 'Error',
-            text: 'Error updating profile picture'
+            text: 'Error updating profile picture',
           });
         }
         return Swal.fire({
           title: 'Success',
-          text: 'New profile photo added!'
+          text: 'New profile photo added!',
+          customClass: classes.swal,
         })
           .then(() => {
             setProfilePhoto(data.profilePicture);
