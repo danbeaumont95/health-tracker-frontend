@@ -109,19 +109,19 @@ const ProfileForm = ({ user, detailsClicked })  => {
         if (success === false) {
           return Swal.fire({
             title: 'Error',
-            text: '[BadRequest] Error updating details, please try again later'
+            text: '[BadRequest] Error updating details, please try again later',
           });
         }
         setSuccessful(true);
         return Swal.fire({
           title: 'Successful',
-          text: 'Details successfully updated!'
+          text: 'Details successfully updated!',
         });
       })
       .catch(() => {
         return Swal.fire({
           title: 'Error',
-          text: '[BadRequest] Error updating details, please try again later'
+          text: '[BadRequest] Error updating details, please try again later',
         });
       });
   };
